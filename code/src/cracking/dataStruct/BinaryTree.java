@@ -2,6 +2,7 @@ package cracking.dataStruct;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.Stack;
 
 public class BinaryTree<T extends Comparable<T>> {
 
@@ -107,6 +108,39 @@ public class BinaryTree<T extends Comparable<T>> {
 		return (Double) null;
 	}
 	
+	public Node<T> getSuccessor(Node<T> given){
+		if(given==null)
+			return null;
+		
+		//if the given node does not right subtree
+		if(given.right==null){
+			Stack<Node<T>> path=new Stack<Node<T>>();
+			if(root!=null){
+				Node<T> current=root;
+				path.push(current);
+				int result;
+				//trace the path from root to the given node
+				while((result =given.data.compareTo(current.data))!=0){
+					if(result>0){
+						current=current.left;
+					}
+					else{
+						current=current.right;
+					}
+					if(current==null) //didn't found the given value
+						return null;
+					else
+						path.push(current);
+				}
+				
+				
+			}
+		}
+		while(given.right!=null){
+			given=given.right;
+		}
+	
+	}
 	public int height(){
 		return height(root);
 	}
