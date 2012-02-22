@@ -108,39 +108,73 @@ public class BinaryTree<T extends Comparable<T>> {
 		return (Double) null;
 	}
 	
-	public Node<T> getSuccessor(Node<T> given){
-		if(given==null)
+	//assume that the given binary tree contains nodes with values: data1, data2
+	public T getLowestCommonAncestor(T data1, T data2) throws Exception{
+		if(root==null || data1==null || data2==null)
 			return null;
 		
-		//if the given node does not right subtree
-		if(given.right==null){
-			Stack<Node<T>> path=new Stack<Node<T>>();
-			if(root!=null){
-				Node<T> current=root;
-				path.push(current);
-				int result;
-				//trace the path from root to the given node
-				while((result =given.data.compareTo(current.data))!=0){
-					if(result>0){
-						current=current.left;
-					}
-					else{
-						current=current.right;
-					}
-					if(current==null) //didn't found the given value
-						return null;
-					else
-						path.push(current);
-				}
-				
-				
-			}
+		//determine which one is smaller and which one is larger.
+		T smaller, larger;
+		if(data1.compareTo(data2)<0)
+		{
+			smaller=data1;
+			larger=data2;
 		}
-		while(given.right!=null){
-			given=given.right;
+		else if(data1.compareTo(data2)>0){
+			smaller=data2;
+			larger=data1;
 		}
-	
+		else
+			throw new Exception("Two nodes cannot have the same value.");
+		
+		Node<T> current=root;
+		boolean tooLarge;
+		boolean tooSmall;
+		do{
+			 tooSmall=current.data.compareTo(smaller)<0;
+			 tooLarge=current.data.compareTo(larger)>0;
+			if(tooSmall)
+				current=current.right;
+			if(tooLarge)
+				current=current.left;
+		}while(tooSmall || tooLarge);
+		
+		return current.data;
 	}
+	
+//	public Node<T> getSuccessor(Node<T> given){
+//		if(given==null)
+//			return null;
+//		
+//		//if the given node does not right subtree
+//		if(given.right==null){
+//			Stack<Node<T>> path=new Stack<Node<T>>();
+//			if(root!=null){
+//				Node<T> current=root;
+//				path.push(current);
+//				int result;
+//				//trace the path from root to the given node
+//				while((result =given.data.compareTo(current.data))!=0){
+//					if(result>0){
+//						current=current.left;
+//					}
+//					else{
+//						current=current.right;
+//					}
+//					if(current==null) //didn't found the given value
+//						return null;
+//					else
+//						path.push(current);
+//				}
+//				
+//				
+//			}
+//		}
+//		while(given.right!=null){
+//			given=given.right;
+//		}
+//	
+//	}
 	public int height(){
 		return height(root);
 	}
